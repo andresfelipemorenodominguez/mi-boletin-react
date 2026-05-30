@@ -25,7 +25,21 @@ model Administrador {
   recovery_token_expires    DateTime?
 
   // Relaciones
-  solicitudes SolicitudCambioContrasena[]
+  solicitudes     SolicitudCambioContrasena[]
+  notificaciones  Notificacion[]
+}
+
+model Notificacion {
+  id_notificacion Int      @id @default(autoincrement())
+  id_admin        Int
+  tipo            String   @default("info") // 'info' | 'success' | 'warning' | 'error'
+  titulo          String
+  mensaje         String
+  leida           Boolean  @default(false)
+  href            String?
+  fecha_creacion  DateTime @default(now())
+
+  administrador Administrador @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
 }
 
 model Estudiante {

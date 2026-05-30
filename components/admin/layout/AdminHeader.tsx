@@ -4,11 +4,12 @@ import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAdmin } from "./AdminContext";
 import {
-  Menu, Moon, Sun, Bell, Search,
+  Menu, Moon, Sun, Search,
   LayoutDashboard, Users, GraduationCap, UsersRound,
   BookOpen, Link as LinkIcon, CalendarDays, ShieldCheck,
   MessageSquare, BarChart3, UserCircle, LucideIcon,
 } from "lucide-react";
+import { NotificationsDropdown } from "./NotificationsDropdown";
 
 interface SearchItem {
   name: string;
@@ -192,10 +193,7 @@ export function AdminHeader() {
 
       <div className="flex items-center gap-2">
         {/* Notifications */}
-        <button className="relative p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-          <Bell className="w-5 h-5" />
-          <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-gray-900"></span>
-        </button>
+        <NotificationsDropdown />
 
         {/* Dark Mode Toggle */}
         <button
