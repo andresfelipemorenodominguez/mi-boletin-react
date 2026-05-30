@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Link as LinkIcon, ChalkboardTeacher, UserGraduate } from "lucide-react";
+import { Link as LinkIcon, Presentation, GraduationCap } from "lucide-react";
 
 export default function AssignmentsPage() {
   return (
@@ -18,7 +18,7 @@ export default function AssignmentsPage() {
         <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-800">
           <div className="flex items-center gap-3 mb-6">
             <div className="p-3 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-xl">
-              <ChalkboardTeacher className="w-6 h-6" />
+              <Presentation className="w-6 h-6" />
             </div>
             <h2 className="text-lg font-bold text-gray-900 dark:text-white">Profesor → Grupo + Materia</h2>
           </div>
@@ -37,7 +37,7 @@ export default function AssignmentsPage() {
         <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-800">
           <div className="flex items-center gap-3 mb-6">
             <div className="p-3 bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 rounded-xl">
-              <UserGraduate className="w-6 h-6" />
+              <GraduationCap className="w-6 h-6" />
             </div>
             <h2 className="text-lg font-bold text-gray-900 dark:text-white">Estudiante → Grupo</h2>
           </div>

@@ -1,4 +1,5 @@
 import React from "react";
+import { getDashboardStats } from "@/actions/admin/dashboard";
 import { StatCard } from "@/components/admin/ui/StatCard";
 import { 
   Users, 
@@ -12,13 +13,14 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
-export default function DashboardPage() {
-  // Mock data for Phase 1
-  const stats = {
-    students: 150,
-    professors: 12,
-    groups: 8,
-    subjects: 24,
+export default async function DashboardPage() {
+  const statsResponse = await getDashboardStats();
+  
+  const stats = statsResponse.success && statsResponse.data ? statsResponse.data : {
+    students: 0,
+    professors: 0,
+    groups: 0,
+    subjects: 0,
   };
 
   const currentDate = new Date().toLocaleDateString("es-ES", {
