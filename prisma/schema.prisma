@@ -1,13 +1,216 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
-  provider = "prisma-client"
-  output   = "../app/generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "sqlite"
+}
+
+// ---------------------------------------------------------
+// MODELOS TRADUCIDOS DESDE tablas.txt (PostgreSQL -> Prisma)
+// ---------------------------------------------------------
+
+model Administrador {
+  id_admin                  Int       @id @default(autoincrement())
+  nombre_completo           String
+  correo_electronico        String    @unique
+  contrasena                String
+  verification_code         String?
+  verification_code_expires DateTime?
+  email_verified            Boolean   @default(false)
+  recovery_token            String?
+  recovery_token_expires    DateTime?
+
+  // Relaciones
+  solicitudes SolicitudCambioContrasena[]
+}
+
+model Estudiante {
+  id_estudiante            Int       @id @default(autoincrement())
+  codigo_estudiante        String?   @unique
+  nombre_completo          String
+  tipo_documento           String
+  numero_documento         String    @unique
+  correo_electronico       String    @unique
+  grado                    String
+  grupo                    String
+  contrasena               String
+  fecha_registro           DateTime  @default(now())
+  estado                   String    @default("activo")
+  
+  // Estos campos parecen ser datos redundantes del admin que los creó en el diseño original.
+  // En Prisma, si quisieras una relación real podrías hacerla, pero mantendremos los campos para ser fieles a la DB original.
+  id_admin                 Int?
+  nombre_completo_admin    String?
+  correo_electronico_admin String?
+
+  // Relaciones
+  grupos        GrupoEstudiante[]
+  notas         Nota[]
+  observaciones Observador[]
+}
+
+model Profesor {
+  id_profesor              Int       @id @default(autoincrement())
+  codigo_profesor          String?   @unique
+  nombre_completo          String
+  tipo_documento           String
+  numero_documento         String    @unique
+  correo_electronico       String    @unique
+  telefono                 String?
+  asignaturas              String
+  contrasena               String
+  fecha_registro           DateTime  @default(now())
+  estado                   String    @default("activo")
+  id_admin                 Int?
+  nombre_completo_admin    String?
+  correo_electronico_admin String?
+
+  // Relaciones
+  grupos_materias GrupoMateria[]
+  observaciones   Observador[]
+  agenda          Agenda[]
+}
+
+model SolicitudCambioContrasena {
+  id_solicitud    Int      @id @default(autoincrement())
+  tipo_usuario    String
+  id_usuario      Int
+  codigo_usuario  String
+  correo_usuario  String
+  motivo          String
+  id_admin        Int
+  fecha_solicitud DateTime @default(now())
+  estado          String   @default("pendiente")
+
+  administrador   Administrador @relation(fields: [id_admin], references: [id_admin])
+}
+
+model PeriodoAcademico {
+  id_periodo   Int      @id @default(autoincrement())
+  nombre       String
+  fecha_inicio DateTime
+  fecha_fin    DateTime
+
+  // Relaciones
+  grupos       Grupo[]
+}
+
+model Grupo {
+  id_grupo   Int      @id @default(autoincrement())
+  nombre     String
+  id_periodo Int?
+
+  periodo    PeriodoAcademico? @relation(fields: [id_periodo], references: [id_periodo])
+  
+  // Relaciones
+  materias     GrupoMateria[]
+  estudiantes  GrupoEstudiante[]
+}
+
+model Materia {
+  id_materia Int      @id @default(autoincrement())
+  nombre     String
+  codigo     String?  @unique
+
+  // Relaciones
+  grupos_materias GrupoMateria[]
+}
+
+model GrupoMateria {
+  id_grupo_materia Int @id @default(autoincrement())
+  id_grupo         Int
+  id_materia       Int
+  id_docente       Int
+
+  grupo      Grupo    @relation(fields: [id_grupo], references: [id_grupo], onDelete: Cascade)
+  materia    Materia  @relation(fields: [id_materia], references: [id_materia], onDelete: Cascade)
+  profesor   Profesor @relation(fields: [id_docente], references: [id_profesor], onDelete: Cascade)
+
+  // Relaciones
+  notas      Nota[]
+  horarios   Horario[]
+}
+
+model GrupoEstudiante {
+  id_grupo      Int
+  id_estudiante Int
+
+  grupo       Grupo      @relation(fields: [id_grupo], references: [id_grupo], onDelete: Cascade)
+  estudiante  Estudiante @relation(fields: [id_estudiante], references: [id_estudiante], onDelete: Cascade)
+
+  // Tabla pivote con llave compuesta
+  @@id([id_grupo, id_estudiante])
+}
+
+model TipoNota {
+  id_tipo     Int    @id @default(autoincrement())
+  nombre_tipo String
+
+  // Relaciones
+  notas       Nota[]
+}
+
+model Nota {
+  id_nota          Int      @id @default(autoincrement())
+  id_estudiante    Int
+  valor            Float
+  descripcion      String?
+  fecha_registro   DateTime @default(now())
+  id_tipo          Int?
+  id_grupo_materia Int?
+
+  estudiante   Estudiante    @relation(fields: [id_estudiante], references: [id_estudiante])
+  tipo         TipoNota?     @relation(fields: [id_tipo], references: [id_tipo])
+  grupoMateria GrupoMateria? @relation(fields: [id_grupo_materia], references: [id_grupo_materia], onDelete: Cascade)
+}
+
+model Horario {
+  id_horario       Int    @id @default(autoincrement())
+  dia_semana       String
+  hora_inicio      DateTime 
+  hora_fin         DateTime
+  id_grupo_materia Int?
+
+  grupoMateria GrupoMateria? @relation(fields: [id_grupo_materia], references: [id_grupo_materia], onDelete: Cascade)
+}
+
+// Tabla general de usuarios (mantenida por compatibilidad si es necesaria)
+model Usuario {
+  id_usuario         Int      @id @default(autoincrement())
+  nombre_completo    String
+  correo_electronico String   @unique
+  contrasena         String
+  tipo_usuario       String
+  fecha_registro     DateTime @default(now())
+  estado             String   @default("activo")
+}
+
+model Observador {
+  id_observacion Int      @id @default(autoincrement())
+  id_estudiante  Int
+  id_profesor    Int
+  tipo           String   // 'positivo', 'negativo', 'neutro'
+  descripcion    String
+  fecha_registro DateTime @default(now())
+
+  estudiante Estudiante @relation(fields: [id_estudiante], references: [id_estudiante], onDelete: Cascade)
+  profesor   Profesor   @relation(fields: [id_profesor], references: [id_profesor], onDelete: Cascade)
+}
+
+model Agenda {
+  id_agenda      Int      @id @default(autoincrement())
+  id_profesor    Int
+  titulo         String
+  descripcion    String?
+  fecha_evento   DateTime 
+  hora_inicio    DateTime?
+  hora_fin       DateTime?
+  estado         String   @default("pendiente") // 'pendiente', 'completado', 'cancelado'
+  fecha_registro DateTime @default(now())
+
+  profesor Profesor @relation(fields: [id_profesor], references: [id_profesor], onDelete: Cascade)
 }
