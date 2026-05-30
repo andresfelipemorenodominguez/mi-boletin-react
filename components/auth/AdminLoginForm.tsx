@@ -46,11 +46,11 @@ export function AdminLoginForm() {
 
       <div className="space-y-4">
         <Input
-          label="Correo Electrónico"
-          type="email"
+          label="Usuario o Correo Electrónico"
+          type="text"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="admin@miboletin.com"
+          placeholder="admin o admin@miboletin.com"
           required
           icon={<Mail className="h-5 w-5 text-slate-400 group-focus-within:text-blue-400 transition-colors" />}
         />

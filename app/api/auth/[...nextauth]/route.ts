@@ -8,7 +8,7 @@ export const authOptions: NextAuthOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: { label: "Correo Electrónico", type: "email" },
+        email: { label: "Usuario o Correo Electrónico", type: "text" },
         password: { label: "Contraseña", type: "password" },
         role: { label: "Rol", type: "text" },
         identifier: { label: "Identificador (Código)", type: "text" } 
@@ -26,7 +26,14 @@ export const authOptions: NextAuthOptions = {
         let userRole = "";
 
         if (role === "admin") {
-          const admin = await prisma.administrador.findUnique({ where: { correo_electronico: email } });
+          const admin = await prisma.administrador.findFirst({ 
+            where: { 
+              OR: [
+                { correo_electronico: email },
+                { nombre_completo: email }
+              ]
+            } 
+          });
           if (admin) {
             if (!admin.email_verified) {
               throw new Error("Por favor, verifica tu correo antes de iniciar sesión.");
