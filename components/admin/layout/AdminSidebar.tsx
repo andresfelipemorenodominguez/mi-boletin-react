@@ -128,7 +128,7 @@ export function AdminSidebar() {
 
         {/* Footer (User Profile) */}
         <div className="p-4 border-t border-gray-200 dark:border-gray-800">
-          <div className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer group">
+          <Link href="/admin/dashboard/profile" onClick={() => { if (window.innerWidth < 1024) closeSidebar(); }} className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer group">
             <div className="relative">
               <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-600 to-blue-400 flex items-center justify-center text-white font-bold shadow-md">
                 {userName.charAt(0)}
@@ -136,7 +136,7 @@ export function AdminSidebar() {
               <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white dark:border-gray-900 rounded-full"></div>
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">
+              <p className="text-sm font-semibold text-gray-900 dark:text-white truncate group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                 {userName}
               </p>
               <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
@@ -146,7 +146,7 @@ export function AdminSidebar() {
             <button className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity">
                <Settings className="w-4 h-4" />
             </button>
-          </div>
+          </Link>
         </div>
       </aside>
     </>
