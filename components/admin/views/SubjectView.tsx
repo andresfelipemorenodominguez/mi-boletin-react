@@ -157,18 +157,18 @@ export function SubjectView({ subjects }: SubjectViewProps) {
           
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium mb-1">Nombre de Materia *</label>
-              <input required name="nombre" value={formData.nombre} onChange={handleInputChange} type="text" placeholder="Ej: Matemáticas" className="w-full p-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700" />
+              <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-1.5">Nombre de Materia *</label>
+              <input required name="nombre" value={formData.nombre} onChange={handleInputChange} type="text" placeholder="Ej: Matemáticas" className="w-full px-3 py-2.5 border border-slate-300 rounded-lg bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100" />
             </div>
             
             <div>
-              <label className="block text-sm font-medium mb-1">Código (Opcional)</label>
-              <input name="codigo" value={formData.codigo} onChange={handleInputChange} type="text" placeholder="Ej: MAT001" className="w-full p-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700" />
+              <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-1.5">Código (Opcional)</label>
+              <input name="codigo" value={formData.codigo} onChange={handleInputChange} type="text" placeholder="Ej: MAT001" className="w-full px-3 py-2.5 border border-slate-300 rounded-lg bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100" />
             </div>
           </div>
 
           <div className="flex justify-end gap-3 pt-4 border-t border-gray-100 dark:border-gray-800">
-            <button type="button" onClick={() => setIsCreateModalOpen(false)} disabled={isSubmitting} className="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 dark:text-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-lg transition-colors font-medium">Cancelar</button>
+            <button type="button" onClick={() => setIsCreateModalOpen(false)} disabled={isSubmitting} className="px-4 py-2 text-slate-600 bg-slate-100 hover:bg-slate-200 dark:text-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-lg transition-colors font-medium border border-slate-200 dark:border-gray-700">Cancelar</button>
             <button type="submit" disabled={isSubmitting} className="px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded-lg transition-colors font-medium disabled:opacity-50">
               {isSubmitting ? "Guardando..." : "Guardar Materia"}
             </button>
@@ -182,18 +182,18 @@ export function SubjectView({ subjects }: SubjectViewProps) {
           
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium mb-1">Nombre de Materia *</label>
-              <input required name="nombre" value={formData.nombre} onChange={handleInputChange} type="text" placeholder="Ej: Matemáticas" className="w-full p-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700" />
+              <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-1.5">Nombre de Materia *</label>
+              <input required name="nombre" value={formData.nombre} onChange={handleInputChange} type="text" placeholder="Ej: Matemáticas" className="w-full px-3 py-2.5 border border-slate-300 rounded-lg bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100" />
             </div>
             
             <div>
-              <label className="block text-sm font-medium mb-1">Código (Opcional)</label>
-              <input name="codigo" value={formData.codigo} onChange={handleInputChange} type="text" placeholder="Ej: MAT001" className="w-full p-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700" />
+              <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-1.5">Código (Opcional)</label>
+              <input name="codigo" value={formData.codigo} onChange={handleInputChange} type="text" placeholder="Ej: MAT001" className="w-full px-3 py-2.5 border border-slate-300 rounded-lg bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100" />
             </div>
           </div>
 
           <div className="flex justify-end gap-3 pt-4 border-t border-gray-100 dark:border-gray-800">
-            <button type="button" onClick={() => setIsEditModalOpen(false)} disabled={isSubmitting} className="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 dark:text-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-lg transition-colors font-medium">Cancelar</button>
+            <button type="button" onClick={() => setIsEditModalOpen(false)} disabled={isSubmitting} className="px-4 py-2 text-slate-600 bg-slate-100 hover:bg-slate-200 dark:text-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-lg transition-colors font-medium border border-slate-200 dark:border-gray-700">Cancelar</button>
             <button type="submit" disabled={isSubmitting} className="px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded-lg transition-colors font-medium disabled:opacity-50">
               {isSubmitting ? "Guardando..." : "Guardar Cambios"}
             </button>
@@ -205,7 +205,7 @@ export function SubjectView({ subjects }: SubjectViewProps) {
         <div className="space-y-4">
           <p className="text-gray-600 dark:text-gray-300">¿Estás seguro de que deseas eliminar esta materia? Esta acción no se puede deshacer.</p>
           <div className="flex justify-end gap-3 pt-4 border-t border-gray-100 dark:border-gray-800">
-            <button onClick={() => setIsDeleteModalOpen(false)} disabled={isSubmitting} className="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 dark:text-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-lg transition-colors font-medium">Cancelar</button>
+            <button onClick={() => setIsDeleteModalOpen(false)} disabled={isSubmitting} className="px-4 py-2 text-slate-600 bg-slate-100 hover:bg-slate-200 dark:text-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-lg transition-colors font-medium border border-slate-200 dark:border-gray-700">Cancelar</button>
             <button onClick={confirmDelete} disabled={isSubmitting} className="px-4 py-2 bg-red-600 text-white hover:bg-red-700 rounded-lg transition-colors font-medium disabled:opacity-50">
               {isSubmitting ? "Eliminando..." : "Eliminar"}
             </button>

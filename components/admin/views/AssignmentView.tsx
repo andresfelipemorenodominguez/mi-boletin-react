@@ -200,29 +200,29 @@ export function AssignmentView({ professors, groups, subjects, students, assignm
           {errorMsg && <div className="p-3 bg-red-100 text-red-700 rounded-lg text-sm">{errorMsg}</div>}
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium mb-1">Profesor *</label>
-              <select required name="id_profesor" value={profFormData.id_profesor} onChange={(e) => setProfFormData({...profFormData, id_profesor: e.target.value})} className="w-full p-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700">
+              <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-1.5">Profesor *</label>
+              <select required name="id_profesor" value={profFormData.id_profesor} onChange={(e) => setProfFormData({...profFormData, id_profesor: e.target.value})} className="w-full px-3 py-2.5 border border-slate-300 rounded-lg bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100">
                 <option value="">Selecciona profesor</option>
                 {professors.map(p => <option key={p.id_profesor} value={p.id_profesor}>{p.nombre_completo} ({p.codigo_profesor})</option>)}
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Grupo *</label>
-              <select required name="id_grupo" value={profFormData.id_grupo} onChange={(e) => setProfFormData({...profFormData, id_grupo: e.target.value})} className="w-full p-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700">
+              <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-1.5">Grupo *</label>
+              <select required name="id_grupo" value={profFormData.id_grupo} onChange={(e) => setProfFormData({...profFormData, id_grupo: e.target.value})} className="w-full px-3 py-2.5 border border-slate-300 rounded-lg bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100">
                 <option value="">Selecciona grupo</option>
                 {groups.map(g => <option key={g.id_grupo} value={g.id_grupo}>{g.grado?.nombre || "Grado"} - {g.nombre}</option>)}
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Materia *</label>
-              <select required name="id_materia" value={profFormData.id_materia} onChange={(e) => setProfFormData({...profFormData, id_materia: e.target.value})} className="w-full p-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700">
+              <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-1.5">Materia *</label>
+              <select required name="id_materia" value={profFormData.id_materia} onChange={(e) => setProfFormData({...profFormData, id_materia: e.target.value})} className="w-full px-3 py-2.5 border border-slate-300 rounded-lg bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100">
                 <option value="">Selecciona materia</option>
                 {subjects.map(s => <option key={s.id_materia} value={s.id_materia}>{s.nombre}</option>)}
               </select>
             </div>
           </div>
           <div className="flex justify-end gap-3 pt-4 border-t border-gray-100 dark:border-gray-800">
-            <button type="button" onClick={() => setIsProfModalOpen(false)} disabled={isSubmitting} className="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 dark:text-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-lg transition-colors font-medium">Cancelar</button>
+            <button type="button" onClick={() => setIsProfModalOpen(false)} disabled={isSubmitting} className="px-4 py-2 text-slate-600 bg-slate-100 hover:bg-slate-200 dark:text-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-lg transition-colors font-medium border border-slate-200 dark:border-gray-700">Cancelar</button>
             <button type="submit" disabled={isSubmitting} className="px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded-lg transition-colors font-medium disabled:opacity-50">
               {isSubmitting ? "Asignando..." : "Asignar"}
             </button>
@@ -236,22 +236,22 @@ export function AssignmentView({ professors, groups, subjects, students, assignm
           {errorMsg && <div className="p-3 bg-red-100 text-red-700 rounded-lg text-sm">{errorMsg}</div>}
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium mb-1">Estudiante *</label>
-              <select required name="id_estudiante" value={studentFormData.id_estudiante} onChange={(e) => setStudentFormData({...studentFormData, id_estudiante: e.target.value})} className="w-full p-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700">
+              <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-1.5">Estudiante *</label>
+              <select required name="id_estudiante" value={studentFormData.id_estudiante} onChange={(e) => setStudentFormData({...studentFormData, id_estudiante: e.target.value})} className="w-full px-3 py-2.5 border border-slate-300 rounded-lg bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100">
                 <option value="">Selecciona estudiante</option>
                 {students.map(s => <option key={s.id_estudiante} value={s.id_estudiante}>{s.nombre_completo} ({s.codigo_estudiante})</option>)}
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Grupo *</label>
-              <select required name="id_grupo" value={studentFormData.id_grupo} onChange={(e) => setStudentFormData({...studentFormData, id_grupo: e.target.value})} className="w-full p-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700">
+              <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-1.5">Grupo *</label>
+              <select required name="id_grupo" value={studentFormData.id_grupo} onChange={(e) => setStudentFormData({...studentFormData, id_grupo: e.target.value})} className="w-full px-3 py-2.5 border border-slate-300 rounded-lg bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100">
                 <option value="">Selecciona grupo</option>
                 {groups.map(g => <option key={g.id_grupo} value={g.id_grupo}>{g.grado?.nombre || "Grado"} - {g.nombre}</option>)}
               </select>
             </div>
           </div>
           <div className="flex justify-end gap-3 pt-4 border-t border-gray-100 dark:border-gray-800">
-            <button type="button" onClick={() => setIsStudentModalOpen(false)} disabled={isSubmitting} className="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 dark:text-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-lg transition-colors font-medium">Cancelar</button>
+            <button type="button" onClick={() => setIsStudentModalOpen(false)} disabled={isSubmitting} className="px-4 py-2 text-slate-600 bg-slate-100 hover:bg-slate-200 dark:text-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-lg transition-colors font-medium border border-slate-200 dark:border-gray-700">Cancelar</button>
             <button type="submit" disabled={isSubmitting} className="px-4 py-2 bg-purple-600 text-white hover:bg-purple-700 rounded-lg transition-colors font-medium disabled:opacity-50">
               {isSubmitting ? "Matriculando..." : "Matricular"}
             </button>
@@ -264,7 +264,7 @@ export function AssignmentView({ professors, groups, subjects, students, assignm
         <div className="space-y-4">
           <p className="text-gray-600 dark:text-gray-300">¿Estás seguro de que deseas eliminar esta asignación de profesor? El profesor ya no tendrá acceso a este grupo/materia.</p>
           <div className="flex justify-end gap-3 pt-4 border-t border-gray-100 dark:border-gray-800">
-            <button onClick={() => setIsDeleteModalOpen(false)} disabled={isSubmitting} className="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 dark:text-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-lg transition-colors font-medium">Cancelar</button>
+            <button onClick={() => setIsDeleteModalOpen(false)} disabled={isSubmitting} className="px-4 py-2 text-slate-600 bg-slate-100 hover:bg-slate-200 dark:text-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-lg transition-colors font-medium border border-slate-200 dark:border-gray-700">Cancelar</button>
             <button onClick={confirmDelete} disabled={isSubmitting} className="px-4 py-2 bg-red-600 text-white hover:bg-red-700 rounded-lg transition-colors font-medium disabled:opacity-50">
               {isSubmitting ? "Eliminando..." : "Eliminar"}
             </button>

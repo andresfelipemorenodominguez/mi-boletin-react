@@ -230,12 +230,12 @@ export function GroupView({ groups, periods, grades }: GroupViewProps) {
           {errorMsg && <div className="p-3 bg-red-100 text-red-700 rounded-lg text-sm">{errorMsg}</div>}
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium mb-1">Nombre del Grado *</label>
-              <input required name="nombre" value={gradeFormData.nombre} onChange={handleGradeInputChange} type="text" placeholder="Ej: Sexto" className="w-full p-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700" />
+              <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-1.5">Nombre del Grado *</label>
+              <input required name="nombre" value={gradeFormData.nombre} onChange={handleGradeInputChange} type="text" placeholder="Ej: Sexto" className="w-full px-3 py-2.5 border border-slate-300 rounded-lg bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100" />
             </div>
           </div>
           <div className="flex justify-end gap-3 pt-4 border-t border-gray-100 dark:border-gray-800">
-            <button type="button" onClick={() => setIsGradeModalOpen(false)} disabled={isSubmitting} className="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg">Cancelar</button>
+            <button type="button" onClick={() => setIsGradeModalOpen(false)} disabled={isSubmitting} className="px-4 py-2 text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg border border-slate-200 dark:border-gray-700 dark:text-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 transition-colors font-medium">Cancelar</button>
             <button type="submit" disabled={isSubmitting} className="px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded-lg">{isSubmitting ? "Guardando..." : "Guardar"}</button>
           </div>
         </form>
@@ -247,8 +247,8 @@ export function GroupView({ groups, periods, grades }: GroupViewProps) {
           {errorMsg && <div className="p-3 bg-red-100 text-red-700 rounded-lg text-sm">{errorMsg}</div>}
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium mb-1">Grado *</label>
-              <select required name="id_grado" value={groupFormData.id_grado} onChange={handleGroupInputChange} className="w-full p-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700">
+              <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-1.5">Grado *</label>
+              <select required name="id_grado" value={groupFormData.id_grado} onChange={handleGroupInputChange} className="w-full px-3 py-2.5 border border-slate-300 rounded-lg bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100">
                 <option value="">Selecciona grado</option>
                 {grades.map(g => (
                   <option key={g.id_grado} value={g.id_grado}>{g.nombre}</option>
@@ -256,12 +256,12 @@ export function GroupView({ groups, periods, grades }: GroupViewProps) {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Nombre (Letra/Número) *</label>
-              <input required name="nombre" value={groupFormData.nombre} onChange={handleGroupInputChange} type="text" placeholder="Ej: A" className="w-full p-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700" />
+              <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-1.5">Nombre (Letra/Número) *</label>
+              <input required name="nombre" value={groupFormData.nombre} onChange={handleGroupInputChange} type="text" placeholder="Ej: A" className="w-full px-3 py-2.5 border border-slate-300 rounded-lg bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100" />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Período Académico *</label>
-              <select required name="id_periodo" value={groupFormData.id_periodo} onChange={handleGroupInputChange} className="w-full p-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700">
+              <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-1.5">Período Académico *</label>
+              <select required name="id_periodo" value={groupFormData.id_periodo} onChange={handleGroupInputChange} className="w-full px-3 py-2.5 border border-slate-300 rounded-lg bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100">
                 <option value="">Selecciona período</option>
                 {periods.map(p => (
                   <option key={p.id_periodo} value={p.id_periodo}>{p.nombre}</option>
@@ -270,7 +270,7 @@ export function GroupView({ groups, periods, grades }: GroupViewProps) {
             </div>
           </div>
           <div className="flex justify-end gap-3 pt-4 border-t border-gray-100 dark:border-gray-800">
-            <button type="button" onClick={() => setIsGroupModalOpen(false)} disabled={isSubmitting} className="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg">Cancelar</button>
+            <button type="button" onClick={() => setIsGroupModalOpen(false)} disabled={isSubmitting} className="px-4 py-2 text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg border border-slate-200 dark:border-gray-700 dark:text-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 transition-colors font-medium">Cancelar</button>
             <button type="submit" disabled={isSubmitting} className="px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded-lg">{isSubmitting ? "Guardando..." : "Guardar"}</button>
           </div>
         </form>
@@ -281,7 +281,7 @@ export function GroupView({ groups, periods, grades }: GroupViewProps) {
         <div className="space-y-4">
           <p className="text-gray-600 dark:text-gray-300">¿Estás seguro de que deseas eliminar este registro? Esta acción no se puede deshacer y puede afectar registros relacionados.</p>
           <div className="flex justify-end gap-3 pt-4 border-t border-gray-100 dark:border-gray-800">
-            <button onClick={() => setIsDeleteModalOpen(false)} disabled={isSubmitting} className="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg">Cancelar</button>
+            <button onClick={() => setIsDeleteModalOpen(false)} disabled={isSubmitting} className="px-4 py-2 text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg border border-slate-200 dark:border-gray-700 dark:text-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 transition-colors font-medium">Cancelar</button>
             <button onClick={confirmDelete} disabled={isSubmitting} className="px-4 py-2 bg-red-600 text-white hover:bg-red-700 rounded-lg">{isSubmitting ? "Eliminando..." : "Eliminar"}</button>
           </div>
         </div>

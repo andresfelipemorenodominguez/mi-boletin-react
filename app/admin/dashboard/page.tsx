@@ -51,8 +51,8 @@ export default async function DashboardPage() {
 
       {/* Overview Stats Section */}
       <section>
-        <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-          <span className="w-1.5 h-6 bg-blue-600 rounded-full"></span>
+        <h2 className="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+          <span className="w-1 h-5 bg-blue-600 rounded-full"></span>
           Resumen General
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -89,8 +89,8 @@ export default async function DashboardPage() {
 
       {/* Quick Actions Section */}
       <section>
-        <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-          <span className="w-1.5 h-6 bg-green-500 rounded-full"></span>
+        <h2 className="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+          <span className="w-1 h-5 bg-green-500 rounded-full"></span>
           Accesos Rápidos
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
@@ -111,12 +111,12 @@ function QuickActionLink({ href, icon: Icon, label }: { href: string; icon: Reac
   return (
     <Link
       href={href}
-      className="flex flex-col items-center justify-center p-4 bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-gray-800 dark:hover:border-blue-500 transition-all group shadow-sm hover:shadow-md"
+      className="flex flex-col items-center justify-center p-4 bg-white dark:bg-gray-900 rounded-2xl border border-slate-200 dark:border-gray-800 hover:border-blue-400 hover:bg-blue-50/60 dark:hover:bg-gray-800 dark:hover:border-blue-500 transition-all group shadow-sm hover:shadow-md"
     >
-      <div className="w-12 h-12 rounded-full bg-gray-50 dark:bg-gray-800 group-hover:bg-blue-100 dark:group-hover:bg-blue-900/30 flex items-center justify-center mb-3 transition-colors">
-        <Icon className="w-6 h-6 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400" />
+      <div className="w-12 h-12 rounded-xl bg-slate-100 dark:bg-gray-800 group-hover:bg-blue-100 dark:group-hover:bg-blue-900/30 flex items-center justify-center mb-3 transition-colors">
+        <Icon className="w-5 h-5 text-slate-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400" />
       </div>
-      <span className="text-sm font-medium text-gray-700 dark:text-gray-300 text-center group-hover:text-blue-700 dark:group-hover:text-blue-400">
+      <span className="text-sm font-medium text-slate-600 dark:text-gray-300 text-center group-hover:text-blue-700 dark:group-hover:text-blue-400">
         {label}
       </span>
     </Link>

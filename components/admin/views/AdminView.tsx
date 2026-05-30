@@ -74,7 +74,7 @@ export function AdminView({ admins }: AdminViewProps) {
         </div>
       </div>
 
-      <div className="p-6 bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
+      <div className="p-6 bg-white dark:bg-gray-900 rounded-xl border border-slate-200 dark:border-gray-800 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
         <div>
           <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-1 flex items-center gap-2">
             <UserPlus className="w-5 h-5 text-blue-600 dark:text-blue-400" />
@@ -107,7 +107,7 @@ export function AdminView({ admins }: AdminViewProps) {
           </p>
           {errorMsg && <div className="text-sm text-red-600 bg-red-50 dark:bg-red-900/30 p-3 rounded-lg">{errorMsg}</div>}
           <div className="flex justify-end gap-3 pt-4 border-t border-gray-100 dark:border-gray-800">
-            <button onClick={() => setIsDeleteModalOpen(false)} disabled={isSubmitting} className="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 dark:text-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-lg transition-colors font-medium">Cancelar</button>
+            <button onClick={() => setIsDeleteModalOpen(false)} disabled={isSubmitting} className="px-4 py-2 text-slate-600 bg-slate-100 hover:bg-slate-200 dark:text-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-lg transition-colors font-medium border border-slate-200 dark:border-gray-700">Cancelar</button>
             <button onClick={confirmDelete} disabled={isSubmitting} className="px-4 py-2 bg-red-600 text-white hover:bg-red-700 rounded-lg transition-colors font-medium disabled:opacity-50">
               {isSubmitting ? "Eliminando..." : "Eliminar"}
             </button>

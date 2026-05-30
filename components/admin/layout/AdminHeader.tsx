@@ -8,7 +8,7 @@ export function AdminHeader() {
   const { toggleSidebar, isDarkMode, toggleDarkMode } = useAdmin();
 
   return (
-    <header className="h-16 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between px-4 lg:px-8 z-30 sticky top-0">
+    <header className="h-16 bg-white dark:bg-gray-900 border-b border-slate-200 dark:border-gray-800 flex items-center justify-between px-4 lg:px-8 z-30 sticky top-0 shadow-sm dark:shadow-none">
       <div className="flex items-center gap-4">
         {/* Mobile menu button */}
         <button

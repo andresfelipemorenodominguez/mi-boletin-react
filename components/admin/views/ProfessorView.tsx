@@ -223,13 +223,13 @@ export function ProfessorView({ professors }: ProfessorViewProps) {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="col-span-1 md:col-span-2">
-              <label className="block text-sm font-medium mb-1">Nombre Completo *</label>
-              <input required name="nombre_completo" value={formData.nombre_completo} onChange={handleInputChange} type="text" className="w-full p-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700" />
+              <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-1.5">Nombre Completo *</label>
+              <input required name="nombre_completo" value={formData.nombre_completo} onChange={handleInputChange} type="text" className="w-full px-3 py-2.5 border border-slate-300 rounded-lg bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100" />
             </div>
             
             <div>
-              <label className="block text-sm font-medium mb-1">Tipo de Documento *</label>
-              <select required name="tipo_documento" value={formData.tipo_documento} onChange={handleInputChange} className="w-full p-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700">
+              <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-1.5">Tipo de Documento *</label>
+              <select required name="tipo_documento" value={formData.tipo_documento} onChange={handleInputChange} className="w-full px-3 py-2.5 border border-slate-300 rounded-lg bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100">
                 <option value="">Selecciona tipo</option>
                 <option value="CC">Cédula de Ciudadanía</option>
                 <option value="CE">Cédula de Extranjería</option>
@@ -238,30 +238,30 @@ export function ProfessorView({ professors }: ProfessorViewProps) {
             </div>
             
             <div>
-              <label className="block text-sm font-medium mb-1">Número de Documento *</label>
-              <input required name="numero_documento" value={formData.numero_documento} onChange={handleInputChange} type="text" className="w-full p-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700" />
+              <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-1.5">Número de Documento *</label>
+              <input required name="numero_documento" value={formData.numero_documento} onChange={handleInputChange} type="text" className="w-full px-3 py-2.5 border border-slate-300 rounded-lg bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100" />
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1">Correo Electrónico *</label>
-              <input required name="correo_electronico" value={formData.correo_electronico} onChange={handleInputChange} type="email" className="w-full p-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700" />
+              <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-1.5">Correo Electrónico *</label>
+              <input required name="correo_electronico" value={formData.correo_electronico} onChange={handleInputChange} type="email" className="w-full px-3 py-2.5 border border-slate-300 rounded-lg bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100" />
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1">Teléfono</label>
-              <input name="telefono" value={formData.telefono} onChange={handleInputChange} type="text" className="w-full p-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700" />
+              <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-1.5">Teléfono</label>
+              <input name="telefono" value={formData.telefono} onChange={handleInputChange} type="text" className="w-full px-3 py-2.5 border border-slate-300 rounded-lg bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100" />
             </div>
 
             <div className="col-span-1 md:col-span-2">
-              <label className="block text-sm font-medium mb-1">Contraseña *</label>
+              <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-1.5">Contraseña *</label>
               <div className="flex gap-2">
                 <div className="relative flex-1">
-                  <input required name="contrasena" value={formData.contrasena} onChange={handleInputChange} type={showPassword ? "text" : "password"} className="w-full p-2 pr-10 border rounded-lg dark:bg-gray-800 dark:border-gray-700" />
+                  <input required name="contrasena" value={formData.contrasena} onChange={handleInputChange} type={showPassword ? "text" : "password"} className="w-full px-3 py-2.5 pr-10 border border-slate-300 rounded-lg bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100" />
                   <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500">
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
-                <button type="button" onClick={handleGeneratePassword} className="px-3 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors flex items-center gap-1 text-sm font-medium">
+                <button type="button" onClick={handleGeneratePassword} className="px-3 py-2.5 bg-slate-100 hover:bg-slate-200 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-lg transition-colors flex items-center gap-1 text-sm font-medium text-slate-700 dark:text-gray-200 border border-slate-200 dark:border-gray-600">
                   <RefreshCw className="w-4 h-4" /> Generar
                 </button>
               </div>
@@ -269,7 +269,7 @@ export function ProfessorView({ professors }: ProfessorViewProps) {
           </div>
 
           <div className="flex justify-end gap-3 pt-4 border-t border-gray-100 dark:border-gray-800">
-            <button type="button" onClick={() => setIsCreateModalOpen(false)} disabled={isSubmitting} className="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 dark:text-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-lg transition-colors font-medium">Cancelar</button>
+            <button type="button" onClick={() => setIsCreateModalOpen(false)} disabled={isSubmitting} className="px-4 py-2 text-slate-600 bg-slate-100 hover:bg-slate-200 dark:text-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-lg transition-colors font-medium border border-slate-200 dark:border-gray-700">Cancelar</button>
             <button type="submit" disabled={isSubmitting} className="px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded-lg transition-colors font-medium disabled:opacity-50">
               {isSubmitting ? "Guardando..." : "Guardar Profesor"}
             </button>
@@ -284,13 +284,13 @@ export function ProfessorView({ professors }: ProfessorViewProps) {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="col-span-1 md:col-span-2">
-              <label className="block text-sm font-medium mb-1">Nombre Completo *</label>
-              <input required name="nombre_completo" value={formData.nombre_completo} onChange={handleInputChange} type="text" className="w-full p-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700" />
+              <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-1.5">Nombre Completo *</label>
+              <input required name="nombre_completo" value={formData.nombre_completo} onChange={handleInputChange} type="text" className="w-full px-3 py-2.5 border border-slate-300 rounded-lg bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100" />
             </div>
             
             <div>
-              <label className="block text-sm font-medium mb-1">Tipo de Documento *</label>
-              <select required name="tipo_documento" value={formData.tipo_documento} onChange={handleInputChange} className="w-full p-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700">
+              <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-1.5">Tipo de Documento *</label>
+              <select required name="tipo_documento" value={formData.tipo_documento} onChange={handleInputChange} className="w-full px-3 py-2.5 border border-slate-300 rounded-lg bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100">
                 <option value="">Selecciona tipo</option>
                 <option value="CC">Cédula de Ciudadanía</option>
                 <option value="CE">Cédula de Extranjería</option>
@@ -299,30 +299,30 @@ export function ProfessorView({ professors }: ProfessorViewProps) {
             </div>
             
             <div>
-              <label className="block text-sm font-medium mb-1">Número de Documento *</label>
-              <input required name="numero_documento" value={formData.numero_documento} onChange={handleInputChange} type="text" className="w-full p-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700" />
+              <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-1.5">Número de Documento *</label>
+              <input required name="numero_documento" value={formData.numero_documento} onChange={handleInputChange} type="text" className="w-full px-3 py-2.5 border border-slate-300 rounded-lg bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100" />
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1">Correo Electrónico *</label>
-              <input required name="correo_electronico" value={formData.correo_electronico} onChange={handleInputChange} type="email" className="w-full p-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700" />
+              <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-1.5">Correo Electrónico *</label>
+              <input required name="correo_electronico" value={formData.correo_electronico} onChange={handleInputChange} type="email" className="w-full px-3 py-2.5 border border-slate-300 rounded-lg bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100" />
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1">Teléfono</label>
-              <input name="telefono" value={formData.telefono} onChange={handleInputChange} type="text" className="w-full p-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700" />
+              <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-1.5">Teléfono</label>
+              <input name="telefono" value={formData.telefono} onChange={handleInputChange} type="text" className="w-full px-3 py-2.5 border border-slate-300 rounded-lg bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100" />
             </div>
 
             <div className="col-span-1 md:col-span-2">
-              <label className="block text-sm font-medium mb-1">Contraseña (Dejar en blanco para no cambiarla)</label>
+              <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-1.5">Contraseña (Dejar en blanco para no cambiarla)</label>
               <div className="flex gap-2">
                 <div className="relative flex-1">
-                  <input name="contrasena" value={formData.contrasena} onChange={handleInputChange} type={showPassword ? "text" : "password"} className="w-full p-2 pr-10 border rounded-lg dark:bg-gray-800 dark:border-gray-700" />
+                  <input name="contrasena" value={formData.contrasena} onChange={handleInputChange} type={showPassword ? "text" : "password"} className="w-full px-3 py-2.5 pr-10 border border-slate-300 rounded-lg bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100" />
                   <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500">
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
-                <button type="button" onClick={handleGeneratePassword} className="px-3 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors flex items-center gap-1 text-sm font-medium">
+                <button type="button" onClick={handleGeneratePassword} className="px-3 py-2.5 bg-slate-100 hover:bg-slate-200 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-lg transition-colors flex items-center gap-1 text-sm font-medium text-slate-700 dark:text-gray-200 border border-slate-200 dark:border-gray-600">
                   <RefreshCw className="w-4 h-4" /> Generar
                 </button>
               </div>
@@ -330,7 +330,7 @@ export function ProfessorView({ professors }: ProfessorViewProps) {
           </div>
 
           <div className="flex justify-end gap-3 pt-4 border-t border-gray-100 dark:border-gray-800">
-            <button type="button" onClick={() => setIsEditModalOpen(false)} disabled={isSubmitting} className="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 dark:text-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-lg transition-colors font-medium">Cancelar</button>
+            <button type="button" onClick={() => setIsEditModalOpen(false)} disabled={isSubmitting} className="px-4 py-2 text-slate-600 bg-slate-100 hover:bg-slate-200 dark:text-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-lg transition-colors font-medium border border-slate-200 dark:border-gray-700">Cancelar</button>
             <button type="submit" disabled={isSubmitting} className="px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded-lg transition-colors font-medium disabled:opacity-50">
               {isSubmitting ? "Guardando..." : "Guardar Cambios"}
             </button>
@@ -343,7 +343,7 @@ export function ProfessorView({ professors }: ProfessorViewProps) {
         <div className="space-y-4">
           <p className="text-gray-600 dark:text-gray-300">¿Estás seguro de que deseas eliminar este profesor? Esta acción no se puede deshacer.</p>
           <div className="flex justify-end gap-3 pt-4 border-t border-gray-100 dark:border-gray-800">
-            <button onClick={() => setIsDeleteModalOpen(false)} disabled={isSubmitting} className="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 dark:text-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-lg transition-colors font-medium">Cancelar</button>
+            <button onClick={() => setIsDeleteModalOpen(false)} disabled={isSubmitting} className="px-4 py-2 text-slate-600 bg-slate-100 hover:bg-slate-200 dark:text-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-lg transition-colors font-medium border border-slate-200 dark:border-gray-700">Cancelar</button>
             <button onClick={confirmDelete} disabled={isSubmitting} className="px-4 py-2 bg-red-600 text-white hover:bg-red-700 rounded-lg transition-colors font-medium disabled:opacity-50">
               {isSubmitting ? "Eliminando..." : "Eliminar"}
             </button>

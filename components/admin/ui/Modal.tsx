@@ -39,14 +39,14 @@ export function Modal({ isOpen, onClose, title, children, maxWidth = "max-w-2xl"
         onClick={onClose}
         aria-hidden="true"
       />
-      <div 
+      <div
         ref={modalRef}
-        className={`relative w-full ${maxWidth} bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-100 dark:border-gray-800 flex flex-col max-h-[90vh] animate-in zoom-in-95 duration-200`}
+        className={`relative w-full ${maxWidth} bg-white dark:bg-gray-900 rounded-2xl shadow-2xl ring-1 ring-slate-200/80 dark:ring-gray-800 flex flex-col max-h-[90vh] animate-in zoom-in-95 duration-200`}
         role="dialog"
         aria-modal="true"
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-5 border-b border-gray-100 dark:border-gray-800">
+        <div className="flex items-center justify-between p-5 border-b border-slate-100 dark:border-gray-800 bg-slate-50/50 dark:bg-gray-900 rounded-t-2xl">
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-2">
             {title}
           </h2>

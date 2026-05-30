@@ -73,12 +73,12 @@ export function AdminSidebar() {
 
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-72 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-auto flex flex-col ${
+        className={`fixed inset-y-0 left-0 z-50 w-72 bg-white dark:bg-gray-900 border-r border-slate-200 dark:border-gray-800 shadow-sm dark:shadow-none transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-auto flex flex-col ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         {/* Header (Logo) */}
-        <div className="h-16 flex items-center px-6 border-b border-gray-200 dark:border-gray-800">
+        <div className="h-16 flex items-center px-6 border-b border-slate-100 dark:border-gray-800">
           <Link href="/admin/dashboard" className="flex items-center gap-3 w-full group">
             <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-blue-600/10 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">
               <Newspaper className="w-5 h-5" />
@@ -94,7 +94,7 @@ export function AdminSidebar() {
           <nav className="space-y-8">
             {navigationLinks.map((group) => (
               <div key={group.section}>
-                <h3 className="px-3 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">
+                <h3 className="px-3 text-xs font-semibold text-slate-400 dark:text-gray-500 uppercase tracking-wider mb-3">
                   {group.section}
                 </h3>
                 <ul className="space-y-1">
@@ -110,11 +110,11 @@ export function AdminSidebar() {
                           }}
                           className={`flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-all duration-200 ${
                             isActive
-                              ? "bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400"
-                              : "text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-200"
+                              ? "bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 ring-1 ring-blue-100 dark:ring-blue-900/30"
+                              : "text-slate-600 dark:text-gray-400 hover:bg-slate-50 dark:hover:bg-gray-800 hover:text-slate-900 dark:hover:text-gray-200"
                           }`}
                         >
-                          <Icon className={`w-5 h-5 ${isActive ? "text-blue-600 dark:text-blue-400" : "text-gray-400 dark:text-gray-500"}`} />
+                          <Icon className={`w-5 h-5 ${isActive ? "text-blue-600 dark:text-blue-400" : "text-slate-400 dark:text-gray-500"}`} />
                           {item.name}
                         </Link>
                       </li>
