@@ -1,126 +1,92 @@
-"use client";
+import { BookOpen, GraduationCap, BarChart3, Bell } from "lucide-react";
+import { LoginNavbar } from "@/components/login/LoginNavbar";
+import { LoginFormCard } from "@/components/login/LoginFormCard";
+import { AboutSection } from "@/components/login/AboutSection";
+import { FeaturesSection } from "@/components/login/FeaturesSection";
+import { TeamSection } from "@/components/login/TeamSection";
+import { ContactSection } from "@/components/login/ContactSection";
+import { LoginFooter } from "@/components/login/LoginFooter";
 
-import { useState } from "react";
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { GraduationCap, User, Mail, Lock, KeyRound, ShieldAlert } from "lucide-react";
-import { AuthLayout } from "@/components/layouts/AuthLayout";
-import { Input } from "@/components/ui/Input";
-import { Button } from "@/components/ui/Button";
-import { Alert } from "@/components/ui/Alert";
+const HERO_STATS = [
+  { icon: GraduationCap, label: "Estudiantes activos", value: "500+" },
+  { icon: BookOpen, label: "Cursos disponibles", value: "40+" },
+  { icon: BarChart3, label: "Reportes generados", value: "1.2K+" },
+  { icon: Bell, label: "Notificaciones diarias", value: "200+" },
+];
 
 export default function LoginPage() {
-  const router = useRouter();
-  const [role, setRole] = useState<"estudiante" | "profesor">("estudiante");
-  const [identifier, setIdentifier] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-    setIsLoading(true);
-
-    try {
-      const res = await signIn("credentials", {
-        redirect: false,
-        identifier,
-        email,
-        password,
-        role,
-      });
-
-      if (res?.error) {
-        setError(res.error);
-        setIsLoading(false);
-      } else {
-        router.push(`/${role}/dashboard`); // Asumiendo que esta será la ruta futura
-      }
-    } catch (err) {
-      setError("Ocurrió un error inesperado.");
-      setIsLoading(false);
-    }
-  };
-
   return (
-    <AuthLayout 
-      title="Mi Boletín" 
-      subtitle="Acceso para Estudiantes y Profesores"
-    >
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <Alert message={error} type="error" />
+    <div className="min-h-screen bg-slate-950 text-white">
+      <LoginNavbar />
 
-        <div className="grid grid-cols-2 gap-2 p-1 bg-slate-800/50 rounded-xl mb-4">
-          <button
-            type="button"
-            onClick={() => setRole("estudiante")}
-            className={`flex flex-col items-center gap-1 py-3 px-2 rounded-lg text-sm font-medium transition-all duration-300 ${
-              role === "estudiante" ? "bg-blue-600 text-white shadow-md scale-105" : "text-slate-400 hover:text-white hover:bg-white/5"
-            }`}
-          >
-            <GraduationCap className="w-5 h-5" />
-            Estudiante
-          </button>
-          <button
-            type="button"
-            onClick={() => setRole("profesor")}
-            className={`flex flex-col items-center gap-1 py-3 px-2 rounded-lg text-sm font-medium transition-all duration-300 ${
-              role === "profesor" ? "bg-emerald-600 text-white shadow-md scale-105" : "text-slate-400 hover:text-white hover:bg-white/5"
-            }`}
-          >
-            <User className="w-5 h-5" />
-            Profesor
-          </button>
-        </div>
-
-        <div className="space-y-4">
-          <Input
-            label={role === "estudiante" ? "Código de Estudiante" : "Código de Profesor"}
-            type="text"
-            value={identifier}
-            onChange={(e) => setIdentifier(e.target.value)}
-            placeholder={role === "estudiante" ? "Ej: EST-001" : "Ej: PROF-001"}
-            required
-            icon={<KeyRound className="h-5 w-5 text-slate-400 group-focus-within:text-blue-400 transition-colors" />}
-          />
-
-          <Input
-            label="Correo Electrónico"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="correo@ejemplo.com"
-            required
-            icon={<Mail className="h-5 w-5 text-slate-400 group-focus-within:text-blue-400 transition-colors" />}
-          />
-
-          <Input
-            label="Contraseña"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="••••••••"
-            required
-            icon={<Lock className="h-5 w-5 text-slate-400 group-focus-within:text-blue-400 transition-colors" />}
-          />
-        </div>
-
-        <Button type="submit" isLoading={isLoading} variant={role === "estudiante" ? "primary" : "secondary"}>
-          Ingresar al sistema
-        </Button>
-      </form>
-
-      <div className="mt-8 pt-6 border-t border-slate-700">
-        <a 
-          href="/admin/login" 
-          className="flex items-center justify-center gap-2 w-full py-3 px-4 rounded-xl text-sm font-medium text-slate-300 bg-slate-800 hover:bg-slate-700 hover:text-white transition-all border border-slate-700 hover:border-slate-600"
+      {/* HERO */}
+      <section
+        id="inicio"
+        className="relative min-h-screen flex items-center pt-16 overflow-hidden"
+      >
+        {/* Background gradient blobs */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 pointer-events-none"
         >
-          <ShieldAlert className="w-4 h-4 text-purple-400" />
-          Acceso Administrativo
-        </a>
-      </div>
-    </AuthLayout>
+          <div className="absolute -top-40 -left-40 w-[600px] h-[600px] rounded-full bg-blue-600/10 blur-3xl" />
+          <div className="absolute -bottom-40 -right-20 w-[500px] h-[500px] rounded-full bg-indigo-600/10 blur-3xl" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full bg-slate-800/30 blur-3xl" />
+        </div>
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-16 lg:py-0">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+
+            {/* LEFT — Branding */}
+            <div className="space-y-8">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-medium">
+                <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
+                Plataforma educativa activa
+              </div>
+
+              <div className="space-y-4">
+                <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight leading-none">
+                  Mi<span className="text-blue-400">Boletín</span>
+                </h1>
+                <p className="text-xl text-slate-300 font-light leading-relaxed max-w-md">
+                  Acceso para Estudiantes y Profesores. Gestiona calificaciones,
+                  comunicados y rendimiento académico en un solo lugar.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                {HERO_STATS.map(({ icon: Icon, label, value }) => (
+                  <div
+                    key={label}
+                    className="flex items-center gap-3 p-4 rounded-xl bg-slate-900/60 border border-white/5"
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center shrink-0">
+                      <Icon className="w-4 h-4 text-blue-400" />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-lg font-bold text-white leading-none">
+                        {value}
+                      </p>
+                      <p className="text-xs text-slate-500 mt-0.5 truncate">
+                        {label}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* RIGHT — Form */}
+            <LoginFormCard />
+          </div>
+        </div>
+      </section>
+
+      <AboutSection />
+      <FeaturesSection />
+      <TeamSection />
+      <ContactSection />
+      <LoginFooter />
+    </div>
   );
 }
