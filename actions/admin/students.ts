@@ -7,6 +7,13 @@ import bcrypt from "bcryptjs";
 export async function getStudents() {
   try {
     const students = await prisma.estudiante.findMany({
+      include: {
+        grupo: {
+          include: {
+            grado: true
+          }
+        }
+      },
       orderBy: { nombre_completo: "asc" },
     });
     return { success: true, data: students };
@@ -22,16 +29,17 @@ export async function createStudent(formData: FormData) {
     const tipo_documento = formData.get("tipo_documento") as string;
     const numero_documento = formData.get("numero_documento") as string;
     const correo_electronico = formData.get("correo_electronico") as string;
-    const grado = formData.get("grado") as string;
-    const grupo = formData.get("grupo") as string;
+    const id_grupoStr = formData.get("id_grupo") as string;
     const contrasena = formData.get("contrasena") as string;
 
-    if (!nombre_completo || !tipo_documento || !numero_documento || !correo_electronico || !grado || !grupo || !contrasena) {
+    if (!nombre_completo || !tipo_documento || !numero_documento || !correo_electronico || !id_grupoStr || !contrasena) {
       return { success: false, error: "Todos los campos obligatorios deben estar llenos" };
     }
 
+    const id_grupo = parseInt(id_grupoStr, 10);
+    if (isNaN(id_grupo)) return { success: false, error: "Grupo inválido" };
+
     const hashedPassword = await bcrypt.hash(contrasena, 10);
-    // Generar un código único simple
     const codigo_estudiante = `EST${Date.now().toString().slice(-6)}`;
 
     const newStudent = await prisma.estudiante.create({
@@ -41,14 +49,19 @@ export async function createStudent(formData: FormData) {
         tipo_documento,
         numero_documento,
         correo_electronico,
-        grado,
-        grupo,
+        id_grupo,
         contrasena: hashedPassword,
         estado: "activo",
       },
+      include: {
+        grupo: {
+          include: { grado: true }
+        }
+      }
     });
 
     revalidatePath("/admin/dashboard/students");
+    revalidatePath("/admin/dashboard/assignments");
     return { success: true, data: newStudent };
   } catch (error: any) {
     console.error("Error creating student:", error);
@@ -65,6 +78,7 @@ export async function deleteStudent(id_estudiante: number) {
       where: { id_estudiante },
     });
     revalidatePath("/admin/dashboard/students");
+    revalidatePath("/admin/dashboard/assignments");
     return { success: true };
   } catch (error) {
     console.error("Error deleting student:", error);
@@ -78,21 +92,22 @@ export async function editStudent(id_estudiante: number, formData: FormData) {
     const tipo_documento = formData.get("tipo_documento") as string;
     const numero_documento = formData.get("numero_documento") as string;
     const correo_electronico = formData.get("correo_electronico") as string;
-    const grado = formData.get("grado") as string;
-    const grupo = formData.get("grupo") as string;
-    const contrasena = formData.get("contrasena") as string; // Opcional en edición
+    const id_grupoStr = formData.get("id_grupo") as string;
+    const contrasena = formData.get("contrasena") as string; 
 
-    if (!nombre_completo || !tipo_documento || !numero_documento || !correo_electronico || !grado || !grupo) {
+    if (!nombre_completo || !tipo_documento || !numero_documento || !correo_electronico || !id_grupoStr) {
       return { success: false, error: "Todos los campos (excepto contraseña) son obligatorios" };
     }
+
+    const id_grupo = parseInt(id_grupoStr, 10);
+    if (isNaN(id_grupo)) return { success: false, error: "Grupo inválido" };
 
     const dataToUpdate: any = {
       nombre_completo,
       tipo_documento,
       numero_documento,
       correo_electronico,
-      grado,
-      grupo,
+      id_grupo,
     };
 
     if (contrasena && contrasena.trim() !== "") {
@@ -102,9 +117,15 @@ export async function editStudent(id_estudiante: number, formData: FormData) {
     const updatedStudent = await prisma.estudiante.update({
       where: { id_estudiante },
       data: dataToUpdate,
+      include: {
+        grupo: {
+          include: { grado: true }
+        }
+      }
     });
 
     revalidatePath("/admin/dashboard/students");
+    revalidatePath("/admin/dashboard/assignments");
     return { success: true, data: updatedStudent };
   } catch (error: any) {
     console.error("Error editing student:", error);

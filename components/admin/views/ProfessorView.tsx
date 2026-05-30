@@ -5,11 +5,10 @@ import { DataTable, ColumnDef } from "@/components/admin/ui/DataTable";
 import { Modal } from "@/components/admin/ui/Modal";
 import { GraduationCap, Pencil, Trash2, Eye, EyeOff, RefreshCw } from "lucide-react";
 import { createProfessor, deleteProfessor, editProfessor } from "@/actions/admin/professors";
-import { Profesor } from "@prisma/client";
 import { useRouter } from "next/navigation";
 
 interface ProfessorViewProps {
-  professors: Profesor[];
+  professors: any[]; // Extended Profesor with grupos_materias
 }
 
 export function ProfessorView({ professors }: ProfessorViewProps) {
@@ -17,7 +16,7 @@ export function ProfessorView({ professors }: ProfessorViewProps) {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [profToEdit, setProfToEdit] = useState<Profesor | null>(null);
+  const [profToEdit, setProfToEdit] = useState<any | null>(null);
   const [profToDelete, setProfToDelete] = useState<number | null>(null);
   
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -33,9 +32,6 @@ export function ProfessorView({ professors }: ProfessorViewProps) {
     telefono: "",
     contrasena: "",
   });
-  
-  const [selectedAsignaturas, setSelectedAsignaturas] = useState<string[]>([]);
-  const [newAsignatura, setNewAsignatura] = useState("");
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -50,23 +46,8 @@ export function ProfessorView({ professors }: ProfessorViewProps) {
     setFormData({ ...formData, contrasena: pass });
   };
 
-  const handleAddAsignatura = () => {
-    if (newAsignatura.trim() && !selectedAsignaturas.includes(newAsignatura.trim())) {
-      setSelectedAsignaturas([...selectedAsignaturas, newAsignatura.trim()]);
-      setNewAsignatura("");
-    }
-  };
-
-  const handleRemoveAsignatura = (asig: string) => {
-    setSelectedAsignaturas(selectedAsignaturas.filter(a => a !== asig));
-  };
-
   const handleCreateSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (selectedAsignaturas.length === 0) {
-      setErrorMsg("Debes añadir al menos una asignatura");
-      return;
-    }
     
     setIsSubmitting(true);
     setErrorMsg("");
@@ -74,7 +55,7 @@ export function ProfessorView({ professors }: ProfessorViewProps) {
     const data = new FormData();
     Object.entries(formData).forEach(([key, value]) => data.append(key, value));
 
-    const result = await createProfessor(data, selectedAsignaturas);
+    const result = await createProfessor(data);
     setIsSubmitting(false);
 
     if (result.success) {
@@ -83,7 +64,6 @@ export function ProfessorView({ professors }: ProfessorViewProps) {
         nombre_completo: "", tipo_documento: "", numero_documento: "",
         correo_electronico: "", telefono: "", contrasena: "",
       });
-      setSelectedAsignaturas([]);
       router.refresh();
     } else {
       setErrorMsg(result.error || "Error desconocido");
@@ -93,10 +73,6 @@ export function ProfessorView({ professors }: ProfessorViewProps) {
   const handleEditSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!profToEdit) return;
-    if (selectedAsignaturas.length === 0) {
-      setErrorMsg("Debes añadir al menos una asignatura");
-      return;
-    }
     
     setIsSubmitting(true);
     setErrorMsg("");
@@ -104,7 +80,7 @@ export function ProfessorView({ professors }: ProfessorViewProps) {
     const data = new FormData();
     Object.entries(formData).forEach(([key, value]) => data.append(key, value));
 
-    const result = await editProfessor(profToEdit.id_profesor, data, selectedAsignaturas);
+    const result = await editProfessor(profToEdit.id_profesor, data);
     setIsSubmitting(false);
 
     if (result.success) {
@@ -114,7 +90,6 @@ export function ProfessorView({ professors }: ProfessorViewProps) {
         nombre_completo: "", tipo_documento: "", numero_documento: "",
         correo_electronico: "", telefono: "", contrasena: "",
       });
-      setSelectedAsignaturas([]);
       router.refresh();
     } else {
       setErrorMsg(result.error || "Error desconocido");
@@ -136,22 +111,30 @@ export function ProfessorView({ professors }: ProfessorViewProps) {
     }
   };
 
-  const columns: ColumnDef<Profesor>[] = [
+  const columns: ColumnDef<any>[] = [
     { header: "Código", accessorKey: "codigo_profesor" },
     { header: "Nombre", accessorKey: "nombre_completo" },
     { header: "Correo", accessorKey: "correo_electronico" },
     { header: "Teléfono", accessorKey: "telefono" },
     { 
-      header: "Asignaturas", 
+      header: "Asignaciones", 
       cell: (item) => {
-        const asigs = item.asignaturas ? item.asignaturas.split(",") : [];
+        const assignments = item.grupos_materias || [];
+        if (assignments.length === 0) return <span className="text-gray-400 italic text-sm">Sin asignaciones</span>;
+        
+        // Obtenemos los nombres de las materias únicas
+        const materiasUnicas = Array.from(new Set(assignments.map((a: any) => a.materia?.nombre)));
+        
         return (
-          <div className="flex flex-wrap gap-1">
-            {asigs.map((asig, i) => (
-              <span key={i} className="px-2 py-0.5 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded text-xs">
-                {asig}
-              </span>
-            ))}
+          <div className="flex flex-col gap-1">
+            <span className="text-sm font-medium">{assignments.length} Grupo(s)</span>
+            <div className="flex flex-wrap gap-1">
+              {materiasUnicas.map((m: any, i) => (
+                <span key={i} className="px-2 py-0.5 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded text-xs border border-blue-100 dark:border-blue-800">
+                  {m}
+                </span>
+              ))}
+            </div>
           </div>
         );
       }
@@ -181,7 +164,6 @@ export function ProfessorView({ professors }: ProfessorViewProps) {
                 telefono: item.telefono || "",
                 contrasena: "", // Password blank on edit
               });
-              setSelectedAsignaturas(item.asignaturas ? item.asignaturas.split(",") : []);
               setIsEditModalOpen(true);
             }}
             className="p-1 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded transition-colors" 
@@ -209,10 +191,16 @@ export function ProfessorView({ professors }: ProfessorViewProps) {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Profesores</h1>
-          <p className="text-gray-500 dark:text-gray-400">Gestiona los profesores y sus asignaturas.</p>
+          <p className="text-gray-500 dark:text-gray-400">Gestiona los profesores registrados en el sistema.</p>
         </div>
         <button 
-          onClick={() => setIsCreateModalOpen(true)}
+          onClick={() => {
+            setFormData({
+              nombre_completo: "", tipo_documento: "", numero_documento: "",
+              correo_electronico: "", telefono: "", contrasena: "",
+            });
+            setIsCreateModalOpen(true);
+          }}
           className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors shadow-sm font-medium"
         >
           <GraduationCap className="w-5 h-5" />
@@ -223,8 +211,8 @@ export function ProfessorView({ professors }: ProfessorViewProps) {
       <DataTable 
         columns={columns} 
         data={professors} 
-        searchPlaceholder="Buscar por nombre, correo o asignatura..."
-        searchableKeys={["nombre_completo", "correo_electronico", "codigo_profesor", "asignaturas"]}
+        searchPlaceholder="Buscar por nombre o correo..."
+        searchableKeys={["nombre_completo", "correo_electronico", "codigo_profesor"]}
         itemsPerPage={10}
       />
 
@@ -276,29 +264,6 @@ export function ProfessorView({ professors }: ProfessorViewProps) {
                 <button type="button" onClick={handleGeneratePassword} className="px-3 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors flex items-center gap-1 text-sm font-medium">
                   <RefreshCw className="w-4 h-4" /> Generar
                 </button>
-              </div>
-            </div>
-
-            <div className="col-span-1 md:col-span-2">
-              <label className="block text-sm font-medium mb-1">Asignaturas que imparte *</label>
-              <div className="flex gap-2 mb-2">
-                <input 
-                  type="text" 
-                  value={newAsignatura} 
-                  onChange={(e) => setNewAsignatura(e.target.value)} 
-                  onKeyDown={(e) => { if(e.key === "Enter") { e.preventDefault(); handleAddAsignatura(); } }}
-                  placeholder="Ej: Matemáticas"
-                  className="flex-1 p-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700" 
-                />
-                <button type="button" onClick={handleAddAsignatura} className="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg font-medium">Añadir</button>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {selectedAsignaturas.map((asig) => (
-                  <span key={asig} className="px-3 py-1 bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 rounded-full text-sm flex items-center gap-1">
-                    {asig}
-                    <button type="button" onClick={() => handleRemoveAsignatura(asig)} className="text-blue-500 hover:text-blue-800"><Trash2 className="w-3 h-3" /></button>
-                  </span>
-                ))}
               </div>
             </div>
           </div>
@@ -360,29 +325,6 @@ export function ProfessorView({ professors }: ProfessorViewProps) {
                 <button type="button" onClick={handleGeneratePassword} className="px-3 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors flex items-center gap-1 text-sm font-medium">
                   <RefreshCw className="w-4 h-4" /> Generar
                 </button>
-              </div>
-            </div>
-
-            <div className="col-span-1 md:col-span-2">
-              <label className="block text-sm font-medium mb-1">Asignaturas que imparte *</label>
-              <div className="flex gap-2 mb-2">
-                <input 
-                  type="text" 
-                  value={newAsignatura} 
-                  onChange={(e) => setNewAsignatura(e.target.value)} 
-                  onKeyDown={(e) => { if(e.key === "Enter") { e.preventDefault(); handleAddAsignatura(); } }}
-                  placeholder="Ej: Matemáticas"
-                  className="flex-1 p-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700" 
-                />
-                <button type="button" onClick={handleAddAsignatura} className="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg font-medium">Añadir</button>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {selectedAsignaturas.map((asig) => (
-                  <span key={asig} className="px-3 py-1 bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 rounded-full text-sm flex items-center gap-1">
-                    {asig}
-                    <button type="button" onClick={() => handleRemoveAsignatura(asig)} className="text-blue-500 hover:text-blue-800"><Trash2 className="w-3 h-3" /></button>
-                  </span>
-                ))}
               </div>
             </div>
           </div>

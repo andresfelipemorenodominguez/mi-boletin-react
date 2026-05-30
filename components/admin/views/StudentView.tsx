@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { DataTable, ColumnDef } from "@/components/admin/ui/DataTable";
 import { Modal } from "@/components/admin/ui/Modal";
 import { UserPlus, Pencil, Trash2, Eye, EyeOff, RefreshCw } from "lucide-react";
@@ -9,15 +9,16 @@ import { Estudiante } from "@prisma/client";
 import { useRouter } from "next/navigation";
 
 interface StudentViewProps {
-  students: Estudiante[];
+  students: any[]; // Extended Estudiante
+  groups: any[]; // Extended Grupo with Grado
 }
 
-export function StudentView({ students }: StudentViewProps) {
+export function StudentView({ students, groups }: StudentViewProps) {
   const router = useRouter();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [studentToEdit, setStudentToEdit] = useState<Estudiante | null>(null);
+  const [studentToEdit, setStudentToEdit] = useState<any | null>(null);
   const [studentToDelete, setStudentToDelete] = useState<number | null>(null);
   
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -30,13 +31,35 @@ export function StudentView({ students }: StudentViewProps) {
     tipo_documento: "",
     numero_documento: "",
     correo_electronico: "",
-    grado: "",
-    grupo: "",
+    id_grado: "", // Only used for UI filtering
+    id_grupo: "",
     contrasena: "",
   });
 
+  // Extract unique grades from groups
+  const availableGrades = useMemo(() => {
+    const gradesMap = new Map();
+    groups.forEach(g => {
+      if (g.grado) {
+        gradesMap.set(g.grado.id_grado, g.grado);
+      }
+    });
+    return Array.from(gradesMap.values());
+  }, [groups]);
+
+  // Filter groups based on selected grade
+  const availableGroups = useMemo(() => {
+    if (!formData.id_grado) return [];
+    return groups.filter(g => String(g.id_grado) === String(formData.id_grado));
+  }, [groups, formData.id_grado]);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    if (name === "id_grado") {
+      setFormData({ ...formData, id_grado: value, id_grupo: "" });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   const handleGeneratePassword = () => {
@@ -63,7 +86,7 @@ export function StudentView({ students }: StudentViewProps) {
       setIsCreateModalOpen(false);
       setFormData({
         nombre_completo: "", tipo_documento: "", numero_documento: "",
-        correo_electronico: "", grado: "", grupo: "", contrasena: "",
+        correo_electronico: "", id_grado: "", id_grupo: "", contrasena: "",
       });
       router.refresh();
     } else {
@@ -89,7 +112,7 @@ export function StudentView({ students }: StudentViewProps) {
       setStudentToEdit(null);
       setFormData({
         nombre_completo: "", tipo_documento: "", numero_documento: "",
-        correo_electronico: "", grado: "", grupo: "", contrasena: "",
+        correo_electronico: "", id_grado: "", id_grupo: "", contrasena: "",
       });
       router.refresh();
     } else {
@@ -112,12 +135,12 @@ export function StudentView({ students }: StudentViewProps) {
     }
   };
 
-  const columns: ColumnDef<Estudiante>[] = [
+  const columns: ColumnDef<any>[] = [
     { header: "Código", accessorKey: "codigo_estudiante" },
     { header: "Nombre", accessorKey: "nombre_completo" },
     { header: "Correo", accessorKey: "correo_electronico" },
-    { header: "Grado", accessorKey: "grado" },
-    { header: "Grupo", accessorKey: "grupo" },
+    { header: "Grado", cell: (item) => item.grupo?.grado?.nombre || "N/A" },
+    { header: "Grupo", cell: (item) => item.grupo?.nombre || "N/A" },
     { 
       header: "Estado", 
       cell: (item) => (
@@ -140,8 +163,8 @@ export function StudentView({ students }: StudentViewProps) {
                 tipo_documento: item.tipo_documento,
                 numero_documento: item.numero_documento,
                 correo_electronico: item.correo_electronico,
-                grado: item.grado,
-                grupo: item.grupo,
+                id_grado: item.grupo?.id_grado ? String(item.grupo.id_grado) : "",
+                id_grupo: item.id_grupo ? String(item.id_grupo) : "",
                 contrasena: "", // Password is blank on edit unless changed
               });
               setIsEditModalOpen(true);
@@ -174,7 +197,13 @@ export function StudentView({ students }: StudentViewProps) {
           <p className="text-gray-500 dark:text-gray-400">Gestiona los estudiantes inscritos en el sistema.</p>
         </div>
         <button 
-          onClick={() => setIsCreateModalOpen(true)}
+          onClick={() => {
+            setFormData({
+              nombre_completo: "", tipo_documento: "", numero_documento: "",
+              correo_electronico: "", id_grado: "", id_grupo: "", contrasena: "",
+            });
+            setIsCreateModalOpen(true);
+          }}
           className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors shadow-sm font-medium"
         >
           <UserPlus className="w-5 h-5" />
@@ -223,24 +252,21 @@ export function StudentView({ students }: StudentViewProps) {
 
             <div>
               <label className="block text-sm font-medium mb-1">Grado *</label>
-              <select required name="grado" value={formData.grado} onChange={handleInputChange} className="w-full p-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700">
+              <select required name="id_grado" value={formData.id_grado} onChange={handleInputChange} className="w-full p-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700">
                 <option value="">Selecciona grado</option>
-                <option value="6">6°</option>
-                <option value="7">7°</option>
-                <option value="8">8°</option>
-                <option value="9">9°</option>
-                <option value="10">10°</option>
-                <option value="11">11°</option>
+                {availableGrades.map(g => (
+                  <option key={g.id_grado} value={g.id_grado}>{g.nombre}</option>
+                ))}
               </select>
             </div>
 
             <div>
               <label className="block text-sm font-medium mb-1">Grupo *</label>
-              <select required name="grupo" value={formData.grupo} onChange={handleInputChange} className="w-full p-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700">
+              <select required name="id_grupo" value={formData.id_grupo} onChange={handleInputChange} disabled={!formData.id_grado} className="w-full p-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700 disabled:opacity-50">
                 <option value="">Selecciona grupo</option>
-                <option value="A">A</option>
-                <option value="B">B</option>
-                <option value="C">C</option>
+                {availableGroups.map(g => (
+                  <option key={g.id_grupo} value={g.id_grupo}>{g.nombre}</option>
+                ))}
               </select>
             </div>
 
@@ -302,24 +328,21 @@ export function StudentView({ students }: StudentViewProps) {
 
             <div>
               <label className="block text-sm font-medium mb-1">Grado *</label>
-              <select required name="grado" value={formData.grado} onChange={handleInputChange} className="w-full p-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700">
+              <select required name="id_grado" value={formData.id_grado} onChange={handleInputChange} className="w-full p-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700">
                 <option value="">Selecciona grado</option>
-                <option value="6">6°</option>
-                <option value="7">7°</option>
-                <option value="8">8°</option>
-                <option value="9">9°</option>
-                <option value="10">10°</option>
-                <option value="11">11°</option>
+                {availableGrades.map(g => (
+                  <option key={g.id_grado} value={g.id_grado}>{g.nombre}</option>
+                ))}
               </select>
             </div>
 
             <div>
               <label className="block text-sm font-medium mb-1">Grupo *</label>
-              <select required name="grupo" value={formData.grupo} onChange={handleInputChange} className="w-full p-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700">
+              <select required name="id_grupo" value={formData.id_grupo} onChange={handleInputChange} disabled={!formData.id_grado} className="w-full p-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700 disabled:opacity-50">
                 <option value="">Selecciona grupo</option>
-                <option value="A">A</option>
-                <option value="B">B</option>
-                <option value="C">C</option>
+                {availableGroups.map(g => (
+                  <option key={g.id_grupo} value={g.id_grupo}>{g.nombre}</option>
+                ))}
               </select>
             </div>
 

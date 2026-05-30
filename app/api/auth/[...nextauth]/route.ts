@@ -24,6 +24,7 @@ export const authOptions: NextAuthOptions = {
         let id = 0;
         let name = "";
         let userRole = "";
+        let actualEmail = "";
 
         if (role === "admin") {
           const admin = await prisma.administrador.findFirst({ 
@@ -43,6 +44,7 @@ export const authOptions: NextAuthOptions = {
               id = admin.id_admin;
               name = admin.nombre_completo;
               userRole = "admin";
+              actualEmail = admin.correo_electronico;
             } else {
               throw new Error("Contraseña incorrecta.");
             }
@@ -57,6 +59,7 @@ export const authOptions: NextAuthOptions = {
             id = profesor.id_profesor;
             name = profesor.nombre_completo;
             userRole = "profesor";
+            actualEmail = profesor.correo_electronico;
           } else {
             throw new Error("Credenciales de profesor incorrectas.");
           }
@@ -68,6 +71,7 @@ export const authOptions: NextAuthOptions = {
             id = estudiante.id_estudiante;
             name = estudiante.nombre_completo;
             userRole = "estudiante";
+            actualEmail = estudiante.correo_electronico;
           } else {
             throw new Error("Credenciales de estudiante incorrectas.");
           }
@@ -77,7 +81,7 @@ export const authOptions: NextAuthOptions = {
           return {
             id: id.toString(),
             name: name,
-            email: email,
+            email: actualEmail,
             role: userRole,
           };
         }

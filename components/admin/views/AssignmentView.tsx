@@ -98,7 +98,7 @@ export function AssignmentView({ professors, groups, subjects, students, assignm
   const profColumns: ColumnDef<ProfessorAssignment>[] = [
     { header: "ID", accessorKey: "id_grupo_materia" },
     { header: "Profesor", cell: (item) => item.profesor?.nombre_completo || "Desconocido" },
-    { header: "Grupo", cell: (item) => item.grupo?.nombre || "Desconocido" },
+    { header: "Grupo", cell: (item) => item.grupo ? `${item.grupo.grado?.nombre || "Grado"} - ${item.grupo.nombre}` : "Desconocido" },
     { header: "Materia", cell: (item) => item.materia?.nombre || "Desconocida" },
     {
       header: "Acciones",
@@ -210,7 +210,7 @@ export function AssignmentView({ professors, groups, subjects, students, assignm
               <label className="block text-sm font-medium mb-1">Grupo *</label>
               <select required name="id_grupo" value={profFormData.id_grupo} onChange={(e) => setProfFormData({...profFormData, id_grupo: e.target.value})} className="w-full p-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700">
                 <option value="">Selecciona grupo</option>
-                {groups.map(g => <option key={g.id_grupo} value={g.id_grupo}>{g.nombre}</option>)}
+                {groups.map(g => <option key={g.id_grupo} value={g.id_grupo}>{g.grado?.nombre || "Grado"} - {g.nombre}</option>)}
               </select>
             </div>
             <div>
@@ -246,7 +246,7 @@ export function AssignmentView({ professors, groups, subjects, students, assignm
               <label className="block text-sm font-medium mb-1">Grupo *</label>
               <select required name="id_grupo" value={studentFormData.id_grupo} onChange={(e) => setStudentFormData({...studentFormData, id_grupo: e.target.value})} className="w-full p-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700">
                 <option value="">Selecciona grupo</option>
-                {groups.map(g => <option key={g.id_grupo} value={g.id_grupo}>{g.nombre}</option>)}
+                {groups.map(g => <option key={g.id_grupo} value={g.id_grupo}>{g.grado?.nombre || "Grado"} - {g.nombre}</option>)}
               </select>
             </div>
           </div>

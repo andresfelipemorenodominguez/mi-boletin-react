@@ -8,6 +8,16 @@ export async function getProfessors() {
   try {
     const professors = await prisma.profesor.findMany({
       orderBy: { nombre_completo: "asc" },
+      include: {
+        grupos_materias: {
+          include: {
+            materia: true,
+            grupo: {
+              include: { grado: true }
+            }
+          }
+        }
+      }
     });
     return { success: true, data: professors };
   } catch (error) {
@@ -16,7 +26,7 @@ export async function getProfessors() {
   }
 }
 
-export async function createProfessor(formData: FormData, asignaturasArray: string[]) {
+export async function createProfessor(formData: FormData) {
   try {
     const nombre_completo = formData.get("nombre_completo") as string;
     const tipo_documento = formData.get("tipo_documento") as string;
@@ -25,13 +35,12 @@ export async function createProfessor(formData: FormData, asignaturasArray: stri
     const telefono = formData.get("telefono") as string;
     const contrasena = formData.get("contrasena") as string;
 
-    if (!nombre_completo || !tipo_documento || !numero_documento || !correo_electronico || !contrasena || asignaturasArray.length === 0) {
-      return { success: false, error: "Todos los campos obligatorios deben estar llenos y debe seleccionar al menos una asignatura" };
+    if (!nombre_completo || !tipo_documento || !numero_documento || !correo_electronico || !contrasena) {
+      return { success: false, error: "Todos los campos obligatorios deben estar llenos" };
     }
 
     const hashedPassword = await bcrypt.hash(contrasena, 10);
     const codigo_profesor = `PROF${Date.now().toString().slice(-6)}`;
-    const asignaturasStr = asignaturasArray.join(",");
 
     const newProfessor = await prisma.profesor.create({
       data: {
@@ -41,7 +50,6 @@ export async function createProfessor(formData: FormData, asignaturasArray: stri
         numero_documento,
         correo_electronico,
         telefono,
-        asignaturas: asignaturasStr,
         contrasena: hashedPassword,
         estado: "activo",
       },
@@ -71,7 +79,7 @@ export async function deleteProfessor(id_profesor: number) {
   }
 }
 
-export async function editProfessor(id_profesor: number, formData: FormData, asignaturasArray: string[]) {
+export async function editProfessor(id_profesor: number, formData: FormData) {
   try {
     const nombre_completo = formData.get("nombre_completo") as string;
     const tipo_documento = formData.get("tipo_documento") as string;
@@ -80,8 +88,8 @@ export async function editProfessor(id_profesor: number, formData: FormData, asi
     const telefono = formData.get("telefono") as string;
     const contrasena = formData.get("contrasena") as string;
 
-    if (!nombre_completo || !tipo_documento || !numero_documento || !correo_electronico || asignaturasArray.length === 0) {
-      return { success: false, error: "Todos los campos obligatorios deben estar llenos y debe seleccionar al menos una asignatura" };
+    if (!nombre_completo || !tipo_documento || !numero_documento || !correo_electronico) {
+      return { success: false, error: "Todos los campos obligatorios deben estar llenos" };
     }
 
     const dataToUpdate: any = {
@@ -90,7 +98,6 @@ export async function editProfessor(id_profesor: number, formData: FormData, asi
       numero_documento,
       correo_electronico,
       telefono,
-      asignaturas: asignaturasArray.join(","),
     };
 
     if (contrasena && contrasena.trim() !== "") {

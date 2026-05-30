@@ -40,6 +40,7 @@ export async function assignProfessor(formData: FormData) {
     });
 
     revalidatePath("/admin/dashboard/assignments");
+    revalidatePath("/admin/dashboard/professors");
     return { success: true, data: assignment };
   } catch (error) {
     console.error("Error assigning professor:", error);
@@ -60,37 +61,24 @@ export async function assignStudent(formData: FormData) {
     const id_estudiante = parseInt(id_estudianteStr, 10);
     const id_grupo = parseInt(id_grupoStr, 10);
 
-    // Verificar si ya está en ese grupo
-    const existing = await prisma.grupoEstudiante.findFirst({
-      where: {
-        id_grupo,
-        id_estudiante,
-      }
+    const student = await prisma.estudiante.findUnique({
+      where: { id_estudiante }
     });
 
-    if (existing) {
+    if (student?.id_grupo === id_grupo) {
       return { success: false, error: "El estudiante ya está matriculado en este grupo" };
     }
 
-    const assignment = await prisma.grupoEstudiante.create({
+    const updatedStudent = await prisma.estudiante.update({
+      where: { id_estudiante },
       data: {
         id_grupo,
-        id_estudiante,
       }
     });
 
-    // Actualizar también el campo de texto "grupo" en la tabla Estudiante para consistencia si es necesario
-    const grupoInfo = await prisma.grupo.findUnique({ where: { id_grupo } });
-    if (grupoInfo) {
-      await prisma.estudiante.update({
-        where: { id_estudiante },
-        data: { grupo: grupoInfo.nombre }
-      });
-    }
-
     revalidatePath("/admin/dashboard/assignments");
     revalidatePath("/admin/dashboard/students");
-    return { success: true, data: assignment };
+    return { success: true, data: updatedStudent };
   } catch (error) {
     console.error("Error assigning student:", error);
     return { success: false, error: "Error al realizar la matriculación" };
@@ -103,7 +91,7 @@ export async function getProfessorAssignments() {
     const assignments = await prisma.grupoMateria.findMany({
       include: {
         profesor: true,
-        grupo: { include: { periodo: true } },
+        grupo: { include: { periodo: true, grado: true } },
         materia: true,
       },
       orderBy: { id_grupo_materia: 'desc' }
@@ -122,6 +110,7 @@ export async function deleteProfessorAssignment(id_grupo_materia: number) {
       where: { id_grupo_materia }
     });
     revalidatePath("/admin/dashboard/assignments");
+    revalidatePath("/admin/dashboard/professors");
     return { success: true };
   } catch (error) {
     return { success: false, error: "Error al eliminar la asignación" };

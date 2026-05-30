@@ -35,8 +35,7 @@ model Estudiante {
   tipo_documento           String
   numero_documento         String    @unique
   correo_electronico       String    @unique
-  grado                    String
-  grupo                    String
+  id_grupo                 Int?
   contrasena               String
   fecha_registro           DateTime  @default(now())
   estado                   String    @default("activo")
@@ -48,7 +47,7 @@ model Estudiante {
   correo_electronico_admin String?
 
   // Relaciones
-  grupos        GrupoEstudiante[]
+  grupo         Grupo? @relation(fields: [id_grupo], references: [id_grupo], onDelete: SetNull)
   notas         Nota[]
   observaciones Observador[]
 }
@@ -61,7 +60,7 @@ model Profesor {
   numero_documento         String    @unique
   correo_electronico       String    @unique
   telefono                 String?
-  asignaturas              String
+
   contrasena               String
   fecha_registro           DateTime  @default(now())
   estado                   String    @default("activo")
@@ -89,6 +88,14 @@ model SolicitudCambioContrasena {
   administrador   Administrador @relation(fields: [id_admin], references: [id_admin])
 }
 
+model Grado {
+  id_grado Int     @id @default(autoincrement())
+  nombre   String  @unique // Ej: "Sexto", "Séptimo"
+  
+  // Relaciones
+  grupos   Grupo[]
+}
+
 model PeriodoAcademico {
   id_periodo   Int      @id @default(autoincrement())
   nombre       String
@@ -102,13 +109,15 @@ model PeriodoAcademico {
 model Grupo {
   id_grupo   Int      @id @default(autoincrement())
   nombre     String
+  id_grado   Int
   id_periodo Int?
 
+  grado      Grado    @relation(fields: [id_grado], references: [id_grado], onDelete: Cascade)
   periodo    PeriodoAcademico? @relation(fields: [id_periodo], references: [id_periodo])
   
   // Relaciones
   materias     GrupoMateria[]
-  estudiantes  GrupoEstudiante[]
+  estudiantes  Estudiante[]
 }
 
 model Materia {
@@ -135,16 +144,7 @@ model GrupoMateria {
   horarios   Horario[]
 }
 
-model GrupoEstudiante {
-  id_grupo      Int
-  id_estudiante Int
 
-  grupo       Grupo      @relation(fields: [id_grupo], references: [id_grupo], onDelete: Cascade)
-  estudiante  Estudiante @relation(fields: [id_estudiante], references: [id_estudiante], onDelete: Cascade)
-
-  // Tabla pivote con llave compuesta
-  @@id([id_grupo, id_estudiante])
-}
 
 model TipoNota {
   id_tipo     Int    @id @default(autoincrement())
