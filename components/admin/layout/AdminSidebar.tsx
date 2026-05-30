@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useAdmin } from "./AdminContext";
 import {
   LayoutDashboard,
@@ -56,10 +57,10 @@ const navigationLinks = [
 export function AdminSidebar() {
   const pathname = usePathname();
   const { isSidebarOpen, closeSidebar } = useAdmin();
+  const { data: session } = useSession();
 
-  // Mock user for now. Replace with actual session data later
-  const userName = "Administrador";
-  const userEmail = "admin@miboletin.com";
+  const userName = session?.user?.name ?? "Administrador";
+  const userEmail = session?.user?.email ?? "";
 
   return (
     <>
