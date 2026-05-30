@@ -1,54 +1,122 @@
-import React from 'react';
-import { ShieldCheck, Users, BookOpen } from 'lucide-react';
+import React from "react";
+import { StatCard } from "@/components/admin/ui/StatCard";
+import { 
+  Users, 
+  GraduationCap, 
+  UsersRound, 
+  BookOpen,
+  UserPlus,
+  CalendarDays,
+  Link as LinkIcon,
+  ShieldCheck
+} from "lucide-react";
+import Link from "next/link";
 
-export default function AdminDashboardPage() {
+export default function DashboardPage() {
+  // Mock data for Phase 1
+  const stats = {
+    students: 150,
+    professors: 12,
+    groups: 8,
+    subjects: 24,
+  };
+
+  const currentDate = new Date().toLocaleDateString("es-ES", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
   return (
-    <div className="max-w-6xl mx-auto">
-      <div className="mb-8">
-        <h2 className="text-2xl font-bold text-slate-900">Bienvenido al Panel de Control</h2>
-        <p className="text-slate-500 mt-1">Desde aquí podrás gestionar todos los aspectos de la plataforma Mi Boletín.</p>
-      </div>
+    <div className="space-y-8 animate-in fade-in duration-500">
+      {/* Welcome Section */}
+      <section className="bg-gradient-to-br from-blue-600 to-blue-800 rounded-3xl p-8 text-white shadow-lg relative overflow-hidden">
+        {/* Decorative background shapes */}
+        <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 rounded-full bg-white/10 blur-3xl"></div>
+        <div className="absolute bottom-0 right-32 -mb-16 w-48 h-48 rounded-full bg-blue-400/20 blur-2xl"></div>
+        
+        <div className="relative z-10">
+          <h1 className="text-3xl font-bold mb-2">Bienvenido, Administrador</h1>
+          <p className="text-blue-100 max-w-2xl text-lg mb-4">
+            Panel de control de MiBoletín. Gestiona estudiantes, profesores, grupos y toda la estructura académica.
+          </p>
+          <p className="text-sm text-blue-200 font-medium bg-blue-900/30 inline-block px-3 py-1 rounded-full border border-blue-500/30">
+            Hoy es {currentDate}
+          </p>
+        </div>
+      </section>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-start gap-4">
-          <div className="p-3 bg-blue-50 text-blue-600 rounded-xl">
-            <Users className="w-6 h-6" />
-          </div>
-          <div>
-            <h3 className="text-slate-500 text-sm font-medium">Usuarios Activos</h3>
-            <p className="text-2xl font-bold text-slate-900 mt-1">--</p>
-          </div>
+      {/* Overview Stats Section */}
+      <section>
+        <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+          <span className="w-1.5 h-6 bg-blue-600 rounded-full"></span>
+          Resumen General
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <StatCard
+            title="Estudiantes"
+            value={stats.students}
+            subtitle="Activos en el sistema"
+            icon={Users}
+            color="blue"
+          />
+          <StatCard
+            title="Profesores"
+            value={stats.professors}
+            subtitle="Cuerpo docente"
+            icon={GraduationCap}
+            color="green"
+          />
+          <StatCard
+            title="Grupos"
+            value={stats.groups}
+            subtitle="Registrados"
+            icon={UsersRound}
+            color="orange"
+          />
+          <StatCard
+            title="Materias"
+            value={stats.subjects}
+            subtitle="En el catálogo"
+            icon={BookOpen}
+            color="purple"
+          />
         </div>
+      </section>
 
-        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-start gap-4">
-          <div className="p-3 bg-emerald-50 text-emerald-600 rounded-xl">
-            <BookOpen className="w-6 h-6" />
-          </div>
-          <div>
-            <h3 className="text-slate-500 text-sm font-medium">Materias</h3>
-            <p className="text-2xl font-bold text-slate-900 mt-1">--</p>
-          </div>
+      {/* Quick Actions Section */}
+      <section>
+        <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+          <span className="w-1.5 h-6 bg-green-500 rounded-full"></span>
+          Accesos Rápidos
+        </h2>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
+          <QuickActionLink href="/admin/dashboard/students" icon={UserPlus} label="Agregar Estudiante" />
+          <QuickActionLink href="/admin/dashboard/professors" icon={GraduationCap} label="Agregar Profesor" />
+          <QuickActionLink href="/admin/dashboard/periods" icon={CalendarDays} label="Períodos" />
+          <QuickActionLink href="/admin/dashboard/groups" icon={UsersRound} label="Grupos" />
+          <QuickActionLink href="/admin/dashboard/subjects" icon={BookOpen} label="Materias" />
+          <QuickActionLink href="/admin/dashboard/assignments" icon={LinkIcon} label="Asignaciones" />
         </div>
-
-        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-start gap-4">
-          <div className="p-3 bg-purple-50 text-purple-600 rounded-xl">
-            <ShieldCheck className="w-6 h-6" />
-          </div>
-          <div>
-            <h3 className="text-slate-500 text-sm font-medium">Estado del Sistema</h3>
-            <p className="text-2xl font-bold text-slate-900 mt-1">Óptimo</p>
-          </div>
-        </div>
-      </div>
-
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-        <div className="p-6 border-b border-slate-200">
-          <h3 className="text-lg font-semibold text-slate-900">Acciones Rápidas</h3>
-        </div>
-        <div className="p-6 flex items-center justify-center h-48 bg-slate-50 text-slate-400 border-2 border-dashed border-slate-200 rounded-xl m-6">
-          El contenido de gestión se implementará en las siguientes fases.
-        </div>
-      </div>
+      </section>
     </div>
+  );
+}
+
+// Internal component for quick action buttons
+function QuickActionLink({ href, icon: Icon, label }: { href: string; icon: React.ElementType; label: string }) {
+  return (
+    <Link
+      href={href}
+      className="flex flex-col items-center justify-center p-4 bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-gray-800 dark:hover:border-blue-500 transition-all group shadow-sm hover:shadow-md"
+    >
+      <div className="w-12 h-12 rounded-full bg-gray-50 dark:bg-gray-800 group-hover:bg-blue-100 dark:group-hover:bg-blue-900/30 flex items-center justify-center mb-3 transition-colors">
+        <Icon className="w-6 h-6 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400" />
+      </div>
+      <span className="text-sm font-medium text-gray-700 dark:text-gray-300 text-center group-hover:text-blue-700 dark:group-hover:text-blue-400">
+        {label}
+      </span>
+    </Link>
   );
 }
