@@ -1,9 +1,7 @@
 "use server";
 
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-
-const prisma = new PrismaClient();
 
 export async function getSubjects() {
   try {
@@ -51,5 +49,30 @@ export async function deleteSubject(id_materia: number) {
   } catch (error) {
     console.error("Error deleting subject:", error);
     return { success: false, error: "Error al eliminar la materia" };
+  }
+}
+
+export async function editSubject(id_materia: number, formData: FormData) {
+  try {
+    const nombre = formData.get("nombre") as string;
+    const codigo = formData.get("codigo") as string;
+
+    if (!nombre) {
+      return { success: false, error: "El nombre es obligatorio" };
+    }
+
+    const updatedSubject = await prisma.materia.update({
+      where: { id_materia },
+      data: {
+        nombre,
+        codigo: codigo || null,
+      },
+    });
+
+    revalidatePath("/admin/dashboard/subjects");
+    return { success: true, data: updatedSubject };
+  } catch (error) {
+    console.error("Error editing subject:", error);
+    return { success: false, error: "Error al editar la materia (¿Código duplicado?)" };
   }
 }

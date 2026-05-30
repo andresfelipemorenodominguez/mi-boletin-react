@@ -62,3 +62,36 @@ export async function deleteGroup(id_grupo: number) {
     return { success: false, error: "Error al eliminar el grupo" };
   }
 }
+
+export async function editGroup(id_grupo: number, formData: FormData) {
+  try {
+    const nombre = formData.get("nombre") as string;
+    const id_periodoStr = formData.get("id_periodo") as string;
+
+    if (!nombre || !id_periodoStr) {
+      return { success: false, error: "Todos los campos son obligatorios" };
+    }
+
+    const id_periodo = parseInt(id_periodoStr, 10);
+    if (isNaN(id_periodo)) {
+      return { success: false, error: "Período inválido" };
+    }
+
+    const updatedGroup = await prisma.grupo.update({
+      where: { id_grupo },
+      data: {
+        nombre,
+        id_periodo,
+      },
+      include: {
+        periodo: true,
+      }
+    });
+
+    revalidatePath("/admin/dashboard/groups");
+    return { success: true, data: updatedGroup };
+  } catch (error) {
+    console.error("Error editing group:", error);
+    return { success: false, error: "Error al editar el grupo" };
+  }
+}

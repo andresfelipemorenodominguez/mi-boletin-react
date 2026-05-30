@@ -70,3 +70,45 @@ export async function deleteProfessor(id_profesor: number) {
     return { success: false, error: "Error al eliminar el profesor" };
   }
 }
+
+export async function editProfessor(id_profesor: number, formData: FormData, asignaturasArray: string[]) {
+  try {
+    const nombre_completo = formData.get("nombre_completo") as string;
+    const tipo_documento = formData.get("tipo_documento") as string;
+    const numero_documento = formData.get("numero_documento") as string;
+    const correo_electronico = formData.get("correo_electronico") as string;
+    const telefono = formData.get("telefono") as string;
+    const contrasena = formData.get("contrasena") as string;
+
+    if (!nombre_completo || !tipo_documento || !numero_documento || !correo_electronico || asignaturasArray.length === 0) {
+      return { success: false, error: "Todos los campos obligatorios deben estar llenos y debe seleccionar al menos una asignatura" };
+    }
+
+    const dataToUpdate: any = {
+      nombre_completo,
+      tipo_documento,
+      numero_documento,
+      correo_electronico,
+      telefono,
+      asignaturas: asignaturasArray.join(","),
+    };
+
+    if (contrasena && contrasena.trim() !== "") {
+      dataToUpdate.contrasena = await bcrypt.hash(contrasena, 10);
+    }
+
+    const updatedProfessor = await prisma.profesor.update({
+      where: { id_profesor },
+      data: dataToUpdate,
+    });
+
+    revalidatePath("/admin/dashboard/professors");
+    return { success: true, data: updatedProfessor };
+  } catch (error: any) {
+    console.error("Error editing professor:", error);
+    if (error.code === 'P2002') {
+      return { success: false, error: "El correo o documento ya está registrado por otro profesor" };
+    }
+    return { success: false, error: "Error al editar el profesor" };
+  }
+}

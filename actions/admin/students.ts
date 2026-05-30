@@ -71,3 +71,46 @@ export async function deleteStudent(id_estudiante: number) {
     return { success: false, error: "Error al eliminar el estudiante" };
   }
 }
+
+export async function editStudent(id_estudiante: number, formData: FormData) {
+  try {
+    const nombre_completo = formData.get("nombre_completo") as string;
+    const tipo_documento = formData.get("tipo_documento") as string;
+    const numero_documento = formData.get("numero_documento") as string;
+    const correo_electronico = formData.get("correo_electronico") as string;
+    const grado = formData.get("grado") as string;
+    const grupo = formData.get("grupo") as string;
+    const contrasena = formData.get("contrasena") as string; // Opcional en edición
+
+    if (!nombre_completo || !tipo_documento || !numero_documento || !correo_electronico || !grado || !grupo) {
+      return { success: false, error: "Todos los campos (excepto contraseña) son obligatorios" };
+    }
+
+    const dataToUpdate: any = {
+      nombre_completo,
+      tipo_documento,
+      numero_documento,
+      correo_electronico,
+      grado,
+      grupo,
+    };
+
+    if (contrasena && contrasena.trim() !== "") {
+      dataToUpdate.contrasena = await bcrypt.hash(contrasena, 10);
+    }
+
+    const updatedStudent = await prisma.estudiante.update({
+      where: { id_estudiante },
+      data: dataToUpdate,
+    });
+
+    revalidatePath("/admin/dashboard/students");
+    return { success: true, data: updatedStudent };
+  } catch (error: any) {
+    console.error("Error editing student:", error);
+    if (error.code === 'P2002') {
+      return { success: false, error: "El correo o documento ya está registrado por otro estudiante" };
+    }
+    return { success: false, error: "Error al editar el estudiante" };
+  }
+}
